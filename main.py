@@ -1,64 +1,90 @@
-print("Пройдите простой тест чтобы узнать можно ли вам голосовать.", '\n')
+library = {
+    'Dune' : {'author' : 'Franklin Patrick Herbert', 'year' : 1965, 'availability' : True},
+    'Kolobok' : {'author' : 'Tolstoy Alexey Nikolaevich', 'year' : 1941, 'availability' : False},
+    'Wiedźmin' : {'author' : 'Andrzej Sapkowski', 'year' : 1986, 'availability' : True}
+}
 
-
-def vote_test():
-    def age_test():
-        while True:
-            try:
-                age = int(input("Введите количество полных лет "))
-                break
-            except ValueError:
-                print('Пожалуйста используйте целое число')
-        return age
-
-    def citizenship_test():
-        correct = ['да', 'нет']
-        citizenship = input("Вы гражданин? ")
-        while citizenship not in correct:
-            print('Пожалуйста используйте для ответа \"да\" или\"нет\"')
-            citizenship = input("Вы гражданин? ")
-        return citizenship
-
-    def disqualified_test():
-        correct = ['да', 'нет']
-        disqualified = input("Вы находитесь под уголовным преследованием? ")
-        while disqualified not in correct:
-            print('Пожалуйста используйте для ответа \"да\" или \"нет\"')
-            disqualified = input("Вы находитесь под уголовным преследованием? ")
-        return disqualified
-
-    age_input = age_test()
-    if age_input < 18:
-        print('Вы ещё слишком молоды, и не можете голосовать.', '\n')
+def book_list_view(library):
+    if not library:
+        book_list = 'Библиотека пуста'
     else:
-
-        citizenship_input = citizenship_test()
-        if citizenship_input != 'да':
-            print('Вы не гражданин, и не можете голосовать.', '\n')
-        else:
-
-            disqualified_input = disqualified_test()
-            if disqualified_input == 'да':
-                print('Вам запрещено голосовать до прекращения уголовного преследования.', '\n')
-            else:
-                print('Поздравляем! Вы можете голосовать.', '\n')
+        book_list = list(library.keys())
+    return book_list
 
 
-vote_test()
+#dz2
+print(book_list_view(library))
 
 
-def repeater():
-    while True:
-        correct = ['да', 'нет']
-        repeater_input = input("Ещё раз? ")
-        while repeater_input not in correct:
-            print('Пожалуйста используйте для ответа \"да\" или\"нет\"')
-            repeater_input = input("Ещё раз? ")
-        if repeater_input == 'да':
-            vote_test()
-        elif repeater_input == 'нет':
-            print('Тестирование завершено.')
-            break
+#dz3
+correct = ['да', 'нет']
+def add_book():
+    title = input('Укажите название ')
+    author = input('Укажите автора ')
+    year = input('Укажите год ')
+    if title in library:
+        refresh = input('Обновить информацию? ').lower()
+        while refresh not in correct:
+            print('Пожалуйста используйте для ответа \"да\" или \"нет\"')
+            refresh = input('Обновить информацию? ').lower()
+        if refresh == 'да':
+            library[title] = {'author' : author, 'year' : year, 'availability' : None}
+            print(f'Данные по книге {title} успешно обновлены')
+    else:
+        library[title] = {'author' : author, 'year' : year, 'availability' : None}
+        print(f'Данные по книге {title} успешно добавлены')
 
 
-repeater()
+# add_book()
+
+# dz4
+def remove_book():
+    title = input('Укажите название удаляемой книги ')
+    if title in library:
+        library.pop(title)
+        print(f'Книга {title} успешно удалена')
+    else:
+        print('Такой книги в библиотеке не числится')
+
+# remove_book()
+
+# dz5
+def issue_book():
+    title = input('Какую книгу выдать? ')
+    if title in library:
+        book = library[title]
+        book['availability'] = False
+        print(f'Книга {title} выдана')
+    else:
+        print('Такой книги в библиотеке не числится')
+
+def return_book():
+    title = input('Какую книгу возвращают? ')
+    if title in library:
+        book = library[title]
+        book['availability'] = True
+        print(f'Книга {title} возвращена')
+    else:
+        print('Такой книги в библиотеке не числится')
+
+
+# issue_book()
+# return_book()
+
+#dz6
+def find_book(title):
+    if title in library:
+        book = library[title]
+        print(f'Книга {title} за авторством {book['author']}, {book['year']}-го года выпуска числится в библиотеке')
+        if book['availability'] is True:
+            print('Книга доступна')
+        if book['availability'] is False:
+            print('Книга выдана')
+        if book['availability'] is None:
+            print('Книга в библиотеке, но ее статус не определен')
+
+    else:
+        print('Такой книги в библиотеке не числится')
+
+
+find_book('Wiedźmin')
